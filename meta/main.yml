@@ -3,14 +3,14 @@ dependencies: []
 galaxy_info:
   author: mamono210
   company: no name
-  description: Remi's RPM repository installation for CentOS7/Srream8.
+  description: Remi's RPM repository installation for CS8/9.
   galaxy_tags: []
   license: "license (BSD, MIT)"
-  min_ansible_version: 6.0.0
+  min_ansible_version: 9.0.1
   role_name: remi
   platforms:
     - name: EL
       release:
-        - 7
         - 8
+        - 9
   standalone: true

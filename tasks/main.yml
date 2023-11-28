@@ -1,21 +1,22 @@
 ---
 - name: Import remi GPG key.
   ansible.builtin.rpm_key:
-    key: "{{ remi_repo_gpg_key_url }}"
+    key: "{{ remi_repo_8_gpg_key_url }}"
     state: present
 
-- name: Install remi repo on CentOS7.
-  ansible.builtin.package:
-    name: "{{ remi_repo_url_7 }}"
-    state: present
-  when:
-    - ansible_distribution == 'CentOS'
-    - ansible_distribution_major_version == '7'
-
-- name: Install remi repo on CentOS8.
+- name: Install remi repo on CentOS Stream 8.
   ansible.builtin.package:
     name: "{{ remi_repo_url_8 }}"
     state: present
   when:
     - ansible_distribution == 'CentOS'
     - ansible_distribution_major_version == '8'
+
+- name: Install remi repo on CentOS Stream 9.
+  ansible.builtin.dnf:
+    name: "{{ remi_repo_url_9 }}"
+    state: present
+    disable_gpg_check: true
+  when:
+    - ansible_distribution == 'CentOS'
+    - ansible_distribution_major_version == '9'
