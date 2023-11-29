@@ -1,53 +1,14 @@
 ---
-- name: Import remi GPG key.
-  ansible.builtin.rpm_key:
-    key: "{{ remi_repo_8_gpg_key_url }}"
-    state: present
-
-- name: Install remi repo on CentOS Stream 8.
-  ansible.builtin.dnf:
-    name: "{{ remi_repo_url_8 }}"
-    state: present
-    disable_gpg_check: true
-  async: 60
-  poll: 0
-  register: async_result_cs8
-  changed_when: false
+- name: Install remi repo on CS8.
+  ansible.builtin.include_tasks:
+    file: cs8.yml
   when:
     - ansible_distribution == 'CentOS'
     - ansible_distribution_major_version == '8'
 
-- name: Check if remi repo is installed on CentStream 8.
-  ansible.builtin.async_status:
-    jid: "{{ async_result_cs8.ansible_job_id }}"
-  register: job_result_cs8
-  retries: 10
-  delay: 60
-  until: job_result_cs8.finished | default(false)
-  when:
-    - ansible_distribution == 'CentOS'
-    - ansible_distribution_major_version == '8'
-
-- name: Install remi repo on CentOS Stream 9.
-  ansible.builtin.dnf:
-    name: "{{ remi_repo_url_9 }}"
-    state: present
-    disable_gpg_check: true
-  async: 60
-  poll: 0
-  register: async_result_cs9
-  changed_when: false
-  when:
-    - ansible_distribution == 'CentOS'
-    - ansible_distribution_major_version == '9'
-
-- name: Check if remi repo is installed on CentStream 9.
-  ansible.builtin.async_status:
-    jid: "{{ async_result_cs9.ansible_job_id }}"
-  register: job_result_cs9
-  retries: 10
-  delay: 60
-  until: job_result_cs9.finished | default(false)
+- name: Install remi repo on CS9.
+  ansible.builtin.include_tasks:
+    file: cs9.yml
   when:
     - ansible_distribution == 'CentOS'
     - ansible_distribution_major_version == '9'
