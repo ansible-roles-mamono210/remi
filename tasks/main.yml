@@ -8,6 +8,21 @@
   ansible.builtin.package:
     name: "{{ remi_repo_url_8 }}"
     state: present
+  async: 60
+  poll: 0
+  changed_when: false
+  register: async_result_cs8
+  when:
+    - ansible_distribution == 'CentOS'
+    - ansible_distribution_major_version == '8'
+
+- name: Check if remi repo is installed on CentStream 8.
+  ansible.builtin.async_status:
+    jid: "{{ async_result_cs8.ansible_job_id }}"
+  register: job_result_cs8
+  until: job_result_cs8.finished
+  retries: 300
+  delay: 10
   when:
     - ansible_distribution == 'CentOS'
     - ansible_distribution_major_version == '8'
@@ -17,6 +32,21 @@
     name: "{{ remi_repo_url_9 }}"
     state: present
     disable_gpg_check: true
+  async: 60
+  poll: 0
+  changed_when: false
+  register: async_result_cs9
+  when:
+    - ansible_distribution == 'CentOS'
+    - ansible_distribution_major_version == '9'
+
+- name: Check if remi repo is installed on CentStream 9.
+  ansible.builtin.async_status:
+    jid: "{{ async_result_cs9.ansible_job_id }}"
+  register: job_result_cs9
+  until: job_result_cs9.finished
+  retries: 100
+  delay: 10
   when:
     - ansible_distribution == 'CentOS'
     - ansible_distribution_major_version == '9'
