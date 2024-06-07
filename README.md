@@ -3,7 +3,7 @@
 Role Description
 =========
 
-Installs [Remi's RPM repository](https://rpms.remirepo.net) for CentOS7/Stream8.
+Installs [Remi's RPM repository](https://rpms.remirepo.net) for CentOS Stream 9.
 
 Requirements
 ------------
