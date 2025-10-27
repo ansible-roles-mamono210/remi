@@ -1,5 +1,2 @@
 ---
-remi_repo_url_8: "https://rpms.remirepo.net/enterprise/remi-release-8.rpm"
-remi_repo_url_9: "https://rpms.remirepo.net/enterprise/remi-release-9.rpm"
-remi_repo_8_gpg_key_url: "https://rpms.remirepo.net/RPM-GPG-KEY-remi2018"
-remi_repo_9_gpg_key_url: "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever"
+remi_release_rpm_url: "https://rpms.remirepo.net/enterprise/remi-release-9.rpm"

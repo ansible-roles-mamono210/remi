@@ -1,11 +1,4 @@
 ---
-- name: Install remi repo on CS8.
-  ansible.builtin.include_tasks:
-    file: cs8.yml
-  when:
-    - ansible_distribution == 'CentOS'
-    - ansible_distribution_major_version == '8'
-
 - name: Install remi repo on CS9.
   ansible.builtin.include_tasks:
     file: cs9.yml

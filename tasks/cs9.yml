@@ -1,33 +1,34 @@
 ---
-- name: Check if remi repo is already installed
-  ansible.builtin.shell: dnf repolist enabled | grep -q '^remi'
-  register: remi_installed
-  changed_when: false
-  ignore_errors: true
-
-- name: Install remi repo on CentOS Stream 9 if not installed
-  ansible.builtin.dnf:
-    name: "{{ remi_repo_url_9 }}"
+- name: Import Remi GPG keys (all years, optional but recommended)
+  ansible.builtin.rpm_key:
     state: present
-    disable_gpg_check: true
-  async: 60
-  poll: 0
-  register: async_result
-  when:
-    - remi_installed.rc != 0
+    key: "{{ item }}"
+  loop:
+    - "https://rpms.remirepo.net/RPM-GPG-KEY-remi"
+    - "https://rpms.remirepo.net/RPM-GPG-KEY-remi2017"
+    - "https://rpms.remirepo.net/RPM-GPG-KEY-remi2018"
+    - "https://rpms.remirepo.net/RPM-GPG-KEY-remi2019"
+    - "https://rpms.remirepo.net/RPM-GPG-KEY-remi2020"
+    - "https://rpms.remirepo.net/RPM-GPG-KEY-remi2021"
+    - "https://rpms.remirepo.net/RPM-GPG-KEY-remi2022"
+    - "https://rpms.remirepo.net/RPM-GPG-KEY-remi2023"
+    - "https://rpms.remirepo.net/RPM-GPG-KEY-remi2024"
+    - "https://rpms.remirepo.net/RPM-GPG-KEY-remi2025"
+  tags: remi
 
-- name: Set changed status if remi repo was already installed
-  ansible.builtin.set_fact:
-    changed: true
-  when:
-    - remi_installed.rc == 0
+- name: Install Remi repository (idempotent)
+  ansible.builtin.dnf:
+    name: "{{ remi_release_rpm_url }}"
+    state: present
+    disable_gpg_check: false
+    update_cache: true
+  tags: remi
 
-- name: Check if remi repo installation is complete on CentStream 9
-  ansible.builtin.async_status:
-    jid: "{{ async_result.ansible_job_id }}"
-  register: job_result
-  retries: 10
-  delay: 60
-  until: job_result.finished | default(false)
-  when:
-    - remi_installed.rc != 0
+- name: Make sure DNF metadata is fresh
+  ansible.builtin.dnf:
+    name: "*"
+    state: latest
+    update_only: true
+    update_cache: true
+  changed_when: false
+  tags: remi
